@@ -1,10 +1,42 @@
 package chapter5;
 import java.lang.reflect.*;
 public class reflectionpractice {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		// TODO Auto-generated method stub
-
+		reflectionpractice r1= new reflectionpractice(1,"a");
+		//一共有三种方式获得Class类的实例, java为每一个对象保持class对象, 类型相同的实例共享一个class.
+		Class cls=r1.getClass();
+		//通过对象获得Class对象
+		System.out.println(cls.equals(Class.forName("chapter5.reflectionpractice")));
+		//通过Class.forName方法得到class对象
+		System.out.println(cls.equals(reflectionpractice.class));
+		//通过类名得到Class
+		//reflectionpractice r2=(reflectionpractice) cls.newInstance();
+		//newInstance只能调用不带参数的默认构造器, 如果美柚默认构造器就会跑出一个异常.
+		System.out.println(cls.getName());
+		//得到类的名称
+		Constructor[] constructors=cls.getDeclaredConstructors();
+		System.out.println(constructors.length);
+		for(int i=0; i<constructors.length;i++){
+			System.out.println("Constructors:\n");
+			System.out.println(constructors[i].getDeclaringClass().getName());
+			System.out.println(constructors[i].isAccessible());
+			System.out.println(constructors[i].toString());
+			System.out.println(constructors[i].getName());
+			System.out.println(constructors[i].getParameterTypes()[0]);
+			System.out.println(constructors[i].getClass());
+			//System.out.println(constructors[i].getExceptionTypes());
+			//System.out.println(constructors[i].getGenericParameterTypes());
+			System.out.println();
+		}
+		Object[] paras= {(Object) new Integer(2),(Object) "k"};
+		reflectionpractice r=(reflectionpractice)constructors[0].newInstance(paras);
+		//在Constructor的instance中调用newInstance这个method可以调用带参数的constructor.
+		System.out.println(r.getClass());
+		
 	}
+	
+	
 	/**
 	 * @param args
 	 */
